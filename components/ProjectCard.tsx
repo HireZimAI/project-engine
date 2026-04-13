@@ -1,0 +1,166 @@
+'use client';
+
+import { Project } from '@/lib/types';
+
+interface ScoreBarProps {
+  label: string;
+  value: number;
+  color?: string;
+}
+
+export function ScoreBar({ label, value, color = 'bg-primary-500' }: ScoreBarProps) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="text-xs text-gray-600 w-20 shrink-0">{label}</span>
+      <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div 
+          className={`h-full ${color} rounded-full transition-all duration-500`}
+          style={{ width: `${(value / 10) * 100}%` }}
+        />
+      </div>
+      <span className="text-xs font-medium text-gray-700 w-6">{value}</span>
+    </div>
+  );
+}
+
+interface ScoreDisplayProps {
+  scores: {
+    revenue: number;
+    ease: number;
+    roiSpeed: number;
+    differentiation: number;
+    total: number;
+  };
+}
+
+export function ScoreDisplay({ scores }: ScoreDisplayProps) {
+  return (
+    <div className="space-y-2">
+      <ScoreBar label="Revenue" value={scores.revenue} color="bg-green-500" />
+      <ScoreBar label="Ease" value={scores.ease} color="bg-blue-500" />
+      <ScoreBar label="Time to ROI" value={scores.roiSpeed} color="bg-purple-500" />
+      <ScoreBar label="Differentiation" value={scores.differentiation} color="bg-accent-500" />
+      <div className="pt-2 mt-2 border-t border-gray-200">
+        <div className="flex justify-between items-center">
+          <span className="text-sm font-medium text-gray-700">Total Score</span>
+          <span className="text-lg font-bold text-primary-600">{scores.total?.toFixed(1) ?? '0.0'}/10</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface ProjectCardProps {
+  project: Project;
+  isExpanded: boolean;
+  onToggle: () => void;
+}
+
+export function ProjectCard({ project, isExpanded, onToggle }: ProjectCardProps) {
+  const categoryColors: Record<string, string> = {
+    'Revenue': 'bg-green-100 text-green-800',
+    'Cost Saving': 'bg-blue-100 text-blue-800',
+    'Retention': 'bg-purple-100 text-purple-800',
+    'Automation': 'bg-gray-100 text-gray-800',
+    'New Service': 'bg-accent-100 text-accent-800'
+  };
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+      {/* Header - always visible */}
+      <button
+        onClick={onToggle}
+        className="w-full p-5 text-left flex items-start justify-between gap-4"
+      >
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-3 mb-2">
+            <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${categoryColors[project.category]}`}>
+              {project.category}
+            </span>
+            <span className="text-xs text-gray-500">#{project.priority} Priority</span>
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900">{project.name}</h3>
+          <p className="text-sm text-gray-600 mt-1 line-clamp-2">{project.description}</p>
+        </div>
+        <div className="flex flex-col items-center shrink-0">
+          <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
+            <span className="text-lg font-bold text-primary-600">{project.scores?.total?.toFixed(1) ?? '0.0'}</span>
+          </div>
+          <svg 
+            className={`w-5 h-5 text-gray-400 mt-2 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </button>
+
+      {/* Expanded content */}
+      {isExpanded && (
+        <div className="px-5 pb-5 border-t border-gray-100">
+          <div className="pt-4 space-y-6">
+            {/* Problem */}
+            <div>
+              <h4 className="text-sm font-semibold text-gray-900 mb-1">Problem Solved</h4>
+              <p className="text-sm text-gray-600">{project.problem}</p>
+            </div>
+
+            {/* Scores */}
+            <div>
+              <h4 className="text-sm font-semibold text-gray-900 mb-3">Impact Scores</h4>
+              <ScoreDisplay scores={project.scores} />
+            </div>
+
+            {/* Implementation */}
+            <div>
+              <h4 className="text-sm font-semibold text-gray-900 mb-2">Implementation Plan <span className="text-xs font-normal text-gray-500">(Subject to Final 3DX)</span></h4>
+              <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                <div>
+                  <span className="text-xs font-medium text-gray-500 uppercase">Overview</span>
+                  <p className="text-sm text-gray-700 mt-1">{project.implementation.overview}</p>
+                </div>
+                <div>
+                  <span className="text-xs font-medium text-gray-500 uppercase">Tools Stack <span className="font-normal text-gray-400">(Subject to Final 3DX)</span></span>
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    {project.implementation.tools.map((tool, i) => (
+                      <span key={i} className="px-2 py-1 bg-white border border-gray-200 rounded text-xs text-gray-700">
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-400 mt-2 italic">Alternatives available upon final diagnosis</p>
+                </div>
+                <div>
+                  <span className="text-xs font-medium text-gray-500 uppercase">DIAGNOSE → DESIGN → DEPLOY → EXECUTE</span>
+                  <div className="mt-2 space-y-2">
+                    {project.implementation.steps.map((step, i) => {
+                      // Categorize steps
+                      const stepUpper = step.toUpperCase();
+                      let prefix = "•";
+                      if (stepUpper.includes("DIAGNOSE")) prefix = "🔍 DIAGNOSE:";
+                      else if (stepUpper.includes("DESIGN")) prefix = "🎨 DESIGN:";
+                      else if (stepUpper.includes("DEPLOY")) prefix = "🚀 DEPLOY:";
+                      else if (stepUpper.includes("EXECUTE")) prefix = "⚡ EXECUTE:";
+                      
+                      return (
+                        <p key={i} className="text-sm text-gray-700">
+                          {step}
+                        </p>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div>
+                  <span className="text-xs font-medium text-gray-500 uppercase">Estimated ROI</span>
+                  <p className="text-sm text-gray-700 mt-1">{project.implementation.roiEstimate}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
