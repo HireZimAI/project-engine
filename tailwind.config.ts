@@ -10,34 +10,38 @@ const config: Config = {
     extend: {
       colors: {
         // HireZim AI Brand Colors
-        brand: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',  // Primary blue
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+        primary: {
+          DEFAULT: '#0F4C81',  // HireZim Blue
+          light: '#1A6BA0',
+          dark: '#0A3558',
+          50: '#e6f0f7',
+          100: '#cce1ef',
+          200: '#99c3df',
+          300: '#66a5cf',
+          400: '#3387bf',
+          500: '#0F4C81',
+          600: '#0d3f6c',
+          700: '#0a3257',
+          800: '#082542',
+          900: '#05182d',
         },
         accent: {
+          DEFAULT: '#22C55E',  // Green accent
+          light: '#4ADE80',
+          dark: '#16A34A',
           50: '#f0fdf4',
           100: '#dcfce7',
           200: '#bbf7d0',
           300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',  // Green accent
-          600: '#16a34a',
+          400: '#4ADE80',
+          500: '#22C55E',
+          600: '#16A34A',
           700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
         },
         dark: {
-          900: '#0f172a',  // Primary dark
-          800: '#1e293b',
-          700: '#334155',
+          DEFAULT: '#1E293B',
+          light: '#334155',
+          dark: '#0F172A',
         }
       },
       fontFamily: {

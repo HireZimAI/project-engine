@@ -136,10 +136,10 @@ export default function InputForm() {
               key={s}
               type="button"
               onClick={() => toggleService(s)}
-              className={`px-3 py-2 rounded-full text-sm border ${
+              className={`px-3 py-2 rounded-full text-sm border transition-all ${
                 formData.currentServices.includes(s)
-                  ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                  ? 'bg-primary text-white border-primary'
+                  : 'bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary'
               }`}
             >
               {s}
@@ -186,7 +186,7 @@ export default function InputForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
+        className="w-full py-4 bg-primary text-white font-bold rounded-lg hover:bg-primary-dark transition-colors disabled:bg-gray-400"
       >
         {loading ? 'Generating...' : '🚀 Generate My AI Projects'}
       </button>

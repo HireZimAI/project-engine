@@ -59,18 +59,18 @@ interface ProjectCardProps {
 export function ProjectCard({ project, isExpanded, onToggle }: ProjectCardProps) {
   const categoryColors: Record<string, string> = {
     'Revenue': 'bg-green-100 text-green-800',
-    'Cost Saving': 'bg-blue-100 text-blue-800',
+    'Cost Saving': 'bg-primary/10 text-primary',
     'Retention': 'bg-purple-100 text-purple-800',
     'Automation': 'bg-gray-100 text-gray-800',
-    'New Service': 'bg-accent-100 text-accent-800'
+    'New Service': 'bg-accent/10 text-accent'
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+    <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-all">
       {/* Header - always visible */}
       <button
         onClick={onToggle}
-        className="w-full p-5 text-left flex items-start justify-between gap-4"
+        className="w-full p-5 text-left flex items-start justify-between gap-4 hover:bg-gray-50 transition-colors"
       >
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3 mb-2">
