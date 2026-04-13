@@ -34,16 +34,20 @@ interface ScoreDisplayProps {
 }
 
 export function ScoreDisplay({ scores }: ScoreDisplayProps) {
+  if (!scores) {
+    return <div className="text-sm text-gray-400">Loading scores...</div>;
+  }
+  const total = scores.total ?? ((scores.revenue + scores.ease + scores.roiSpeed + scores.differentiation) / 4);
   return (
     <div className="space-y-2">
-      <ScoreBar label="Revenue" value={scores.revenue} color="bg-green-500" />
-      <ScoreBar label="Ease" value={scores.ease} color="bg-blue-500" />
-      <ScoreBar label="Time to ROI" value={scores.roiSpeed} color="bg-purple-500" />
-      <ScoreBar label="Differentiation" value={scores.differentiation} color="bg-accent-500" />
+      <ScoreBar label="Revenue" value={scores.revenue ?? 0} color="bg-green-500" />
+      <ScoreBar label="Ease" value={scores.ease ?? 0} color="bg-blue-500" />
+      <ScoreBar label="Time to ROI" value={scores.roiSpeed ?? 0} color="bg-purple-500" />
+      <ScoreBar label="Differentiation" value={scores.differentiation ?? 0} color="bg-accent-500" />
       <div className="pt-2 mt-2 border-t border-gray-200">
         <div className="flex justify-between items-center">
           <span className="text-sm font-medium text-gray-700">Total Score</span>
-          <span className="text-lg font-bold text-primary-600">{scores.total?.toFixed(1) ?? '0.0'}/10</span>
+          <span className="text-lg font-bold text-primary-600">{total?.toFixed(1) ?? '0.0'}/10</span>
         </div>
       </div>
     </div>
@@ -84,7 +88,7 @@ export function ProjectCard({ project, isExpanded, onToggle }: ProjectCardProps)
         </div>
         <div className="flex flex-col items-center shrink-0">
           <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
-            <span className="text-lg font-bold text-primary-600">{project.scores?.total?.toFixed(1) ?? '0.0'}</span>
+            <span className="text-lg font-bold text-primary-600">{project.scores?.total?.toFixed(1) ?? ((project.scores?.revenue + project.scores?.ease + project.scores?.roiSpeed + project.scores?.differentiation) / 4)?.toFixed(1) ?? '0.0'}</span>
           </div>
           <svg 
             className={`w-5 h-5 text-gray-400 mt-2 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
@@ -114,6 +118,7 @@ export function ProjectCard({ project, isExpanded, onToggle }: ProjectCardProps)
             </div>
 
             {/* Implementation */}
+            {project.implementation && (
             <div>
               <h4 className="text-sm font-semibold text-gray-900 mb-2">Implementation Plan <span className="text-xs font-normal text-gray-500">(Subject to Final 3DX)</span></h4>
               <div className="bg-gray-50 rounded-lg p-4 space-y-3">
@@ -158,6 +163,7 @@ export function ProjectCard({ project, isExpanded, onToggle }: ProjectCardProps)
                 </div>
               </div>
             </div>
+            )}
           </div>
         </div>
       )}
