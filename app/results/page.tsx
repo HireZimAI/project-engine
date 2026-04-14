@@ -14,6 +14,7 @@ export default function ResultsPage() {
   const [input, setInput] = useState<AgencyInput | null>(null);
   const [expandedId, setExpandedId] = useState<string>('project-1');
   const [filter, setFilter] = useState<string>('All');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Retrieve from localStorage
@@ -29,10 +30,23 @@ export default function ResultsPage() {
       const parsed = JSON.parse(storedProjects);
       setProjects(parsed.projects || []);
       setInput(JSON.parse(storedInput));
+      setIsLoading(false);
     } catch (e) {
       router.push('/');
     }
-  }, []);
+  }, [router]);
+
+  // Don't render redirect until we've checked
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Redirect if no projects
   if (!projects || projects.length === 0) {
