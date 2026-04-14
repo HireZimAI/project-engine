@@ -8,6 +8,7 @@ export default function InputForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<AgencyInput>({
+    businessName: '',
     agencyType: '',
     clientNiches: '',
     revenueRange: '',
@@ -92,6 +93,18 @@ export default function InputForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <div>
+        <label className="block text-sm font-medium mb-1">Business Name *</label>
+        <input
+          required
+          type="text"
+          value={formData.businessName}
+          onChange={e => setFormData({ ...formData, businessName: e.target.value })}
+          placeholder="Your agency or business name"
+          className="w-full p-3 border rounded-lg"
+        />
+      </div>
+
       <div>
         <label className="block text-sm font-medium mb-1">Agency Type *</label>
         <select

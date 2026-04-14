@@ -1,4 +1,5 @@
 export interface AgencyInput {
+  businessName: string;
   agencyType: string;
   clientNiches: string;
   revenueRange: string;
