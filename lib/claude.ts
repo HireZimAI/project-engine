@@ -183,6 +183,7 @@ Output ONLY valid JSON.`;
     // Extract JSON from response
     const jsonMatch = responseText.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
+      console.log('No JSON found in response:', responseText.substring(0, 500));
       return sampleProjects;
     }
     
@@ -190,7 +191,7 @@ Output ONLY valid JSON.`;
     try {
       parsed = JSON.parse(jsonMatch[0]);
     } catch (parseError: any) {
-      console.log('JSON parse failed, using sample');
+      console.log('JSON parse failed, raw response:', responseText.substring(0, 1000));
       return sampleProjects;
     }
     
