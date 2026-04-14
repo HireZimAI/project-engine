@@ -87,9 +87,10 @@ export function ProjectCard({ project, isExpanded, onToggle }: ProjectCardProps)
           <p className="text-sm text-gray-600 mt-1 line-clamp-2">{project.description}</p>
         </div>
         <div className="flex flex-col items-center shrink-0">
-          <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
-            <span className="text-lg font-bold text-primary-600">{project.scores?.total?.toFixed(1) ?? ((project.scores?.revenue + project.scores?.ease + project.scores?.roiSpeed + project.scores?.differentiation) / 4)?.toFixed(1) ?? '0.0'}</span>
+          <div className="w-12 h-12 rounded-xl overflow-hidden">
+            <img src="/hirezim-icon.svg" alt="HireZim AI" className="w-full h-full" />
           </div>
+          <div className="mt-1 text-xs font-bold text-gray-700">{project.scores?.total?.toFixed(1) ?? ((project.scores?.revenue + project.scores?.ease + project.scores?.roiSpeed + project.scores?.differentiation) / 4)?.toFixed(1) ?? '0.0'}</div>
           <svg 
             className={`w-5 h-5 text-gray-400 mt-2 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
             fill="none" 
