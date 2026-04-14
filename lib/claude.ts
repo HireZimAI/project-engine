@@ -151,11 +151,16 @@ Goals: ${input.goals}
 Output ONLY valid JSON.`;
 
   try {
+    console.log('Calling Claude API with model: claude-sonnet-4-20250514');
+    
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 45000); // 45 second timeout
+    const timeout = setTimeout(() => {
+      controller.abort();
+      console.log('Request timed out after 90s');
+    }, 90000); // 90 second timeout
     
     const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
+      model: 'claude-sonnet-4-20250514',
       max_tokens: 5000,
       system: systemPrompt,
       messages: [
