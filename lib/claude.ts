@@ -215,7 +215,7 @@ Output ONLY valid JSON.`;
 
     return parsed;
   } catch (error: any) {
-    console.error('Claude API error:', error);
+    console.error('Claude API error:', error.message || error);
     return sampleProjects;
   }
 }
