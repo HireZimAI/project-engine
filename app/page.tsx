@@ -3,17 +3,17 @@ import Header from '@/components/Header';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-50">
       <Header />
       <main className="max-w-3xl mx-auto px-4 py-12 sm:px-6 lg:py-16">
         {/* Hero Section */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-6">
-            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-            <span className="text-sm font-medium text-primary">AI Project Engine</span>
+          <div className="inline-flex items-center gap-2 bg-brand-purple/10 px-4 py-2 rounded-full mb-6">
+            <span className="w-2 h-2 bg-brand-purple rounded-full animate-pulse"></span>
+            <span className="text-sm font-medium text-brand-purple">AI Project Engine</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            Discover High-ROI <span className="text-primary">AI Projects</span>
+            Discover High-ROI <span className="text-brand-purple">AI Projects</span>
             <span className="block text-gray-600 mt-2">for Your Agency</span>
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -23,14 +23,14 @@ export default function Home() {
         </div>
 
         {/* Input Form */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-primary/10">
+        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-purple-100">
           <InputForm />
         </div>
 
         {/* Footer */}
         <div className="mt-10 text-center text-sm text-gray-500">
           <p className="flex items-center justify-center gap-2">
-            <span className="text-primary font-medium">HireZim AI</span>
+            <span className="text-brand-purple font-medium">HireZim AI</span>
             <span>•</span>
             <span>AI Automation Experts</span>
           </p>
