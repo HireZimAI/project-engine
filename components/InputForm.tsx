@@ -74,7 +74,8 @@ export default function InputForm() {
       });
 
       if (!response.ok) {
-        throw new Error('Request failed');
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || 'Request failed');
       }
 
       const data = await response.json();
@@ -82,7 +83,8 @@ export default function InputForm() {
       router.push('/results');
     } catch (error) {
       console.error('Error:', error);
-      alert('Failed to generate. Please try again.');
+      const msg = error instanceof Error ? error.message : 'Failed to generate. Please try again.';
+      alert(msg);
     } finally {
       setLoading(false);
     }
