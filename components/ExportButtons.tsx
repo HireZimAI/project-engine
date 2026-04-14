@@ -159,20 +159,12 @@ function generatePDFHTML(projects: Project[], input: AgencyInput): string {
     .logo {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
     }
     
-    .logo-icon {
-      width: 48px;
+    .logo-img {
       height: 48px;
-      background: linear-gradient(135deg, ${brandPurple} 0%, #6B0F87 40%, ${brandBlack} 100%);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 900;
-      font-size: 18px;
+      width: auto;
     }
     
     .logo-text {
@@ -390,10 +382,10 @@ function generatePDFHTML(projects: Project[], input: AgencyInput): string {
 <body>
   <div class="header">
     <div class="logo">
-      <div class="logo-icon">HZ</div>
+      <img src="https://project-engine-production.up.railway.app/hirezim-logo.svg" alt="HireZim AI" class="logo-img" />
       <div>
-        <div class="logo-text">HireZim AI</div>
-        <div class="brand-tagline">AI Automation Experts</div>
+        <div class="logo-text">AI Project Engine</div>
+        <div class="brand-tagline">Powered by HireZim AI</div>
       </div>
     </div>
     <div style="text-align: right;">
