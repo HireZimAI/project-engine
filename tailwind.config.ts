@@ -9,9 +9,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // HireZim AI Brand Colors
+        brand: {
+          blue: '#0F4C81',
+          blueLight: '#1A6BA0',
+          blueDark: '#0A3558',
+          green: '#22C55E',
+          greenLight: '#4ADE80',
+          greenDark: '#16A34A',
+        },
         primary: {
-          DEFAULT: '#0F4C81',  // HireZim Blue
+          DEFAULT: '#0F4C81',
           light: '#1A6BA0',
           dark: '#0A3558',
           50: '#e6f0f7',
@@ -26,7 +33,7 @@ const config: Config = {
           900: '#05182d',
         },
         accent: {
-          DEFAULT: '#22C55E',  // Green accent
+          DEFAULT: '#22C55E',
           light: '#4ADE80',
           dark: '#16A34A',
           50: '#f0fdf4',
@@ -46,6 +53,10 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'hero-pattern': 'linear-gradient(135deg, #0F4C81 0%, #1A6BA0 100%)',
       },
     },
   },
