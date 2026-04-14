@@ -382,7 +382,7 @@ function generatePDFHTML(projects: Project[], input: AgencyInput): string {
 <body>
   <div class="header">
     <div class="logo">
-      <img src="https://project-engine-production.up.railway.app/hirezim-logo.svg" alt="HireZim AI" class="logo-img" />
+      <img src="https://project-engine-production.up.railway.app/hirezim-icon.svg" alt="HireZim AI" style="width: 48px; height: 48px;" />
       <div>
         <div class="logo-text">AI Project Engine</div>
         <div class="brand-tagline">Powered by HireZim AI</div>
