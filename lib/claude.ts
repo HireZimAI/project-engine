@@ -4,6 +4,9 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
+console.log('API Key present:', !!process.env.ANTHROPIC_API_KEY);
+console.log('API Key prefix:', process.env.ANTHROPIC_API_KEY?.substring(0, 10) || 'NONE');
+
 // Sample projects as fallback
 const sampleProjects = {
   projects: [
