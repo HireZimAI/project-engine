@@ -8,6 +8,59 @@ interface ExportButtonsProps {
   input: AgencyInput;
 }
 
+// Text export generator (April 2026 update - bucket + projectType)
+function generateTextExport(projects: Project[], input: AgencyInput): string {
+  const bucketLabels: Record<string, string> = {
+    'Sales': '💰 Sales',
+    'Marketing': '📣 Marketing',
+    'Fulfillment & Operations': '⚙️ Fulfillment & Ops',
+    'Customer Experience & Retention': '❤️ CX & Retention',
+    'Intelligence & Reporting': '📊 Intelligence'
+  };
+  
+  const projectTypeLabels: Record<string, string> = {
+    'Internal': '🏠 Internal',
+    'External-Resellable': '🔄 Resell',
+    'Both': '♻️ Both'
+  };
+
+  let text = `# AI Project Roadmap for ${input.businessName || 'Your Agency'}\n`;
+  text += `Generated: ${new Date().toLocaleDateString()}\n\n`;
+  text += `Client Niches: ${input.clientNiches}\n`;
+  text += `Revenue Range: ${input.revenueRange}\n`;
+  text += `Current Services: ${input.currentServices.join(', ')}\n\n`;
+  text += `---\n\n`;
+  text += `Your AI roadmap surfaces projects across five core business areas:\n`;
+  text += `- Internal tools (for your own agency operations)\n`;
+  text += `- External/Resellable services (to offer clients)\n\n`;
+  text += `---\n\n`;
+
+  // Group by bucket
+  const buckets = ['Sales', 'Marketing', 'Fulfillment & Operations', 'Customer Experience & Retention', 'Intelligence & Reporting'];
+  
+  buckets.forEach(bucket => {
+    const bucketProjects = projects.filter(p => p.bucket === bucket);
+    if (bucketProjects.length === 0) return;
+    
+    text += `## ${bucketLabels[bucket]}\n\n`;
+    
+    bucketProjects.forEach((project, idx) => {
+      text += `### ${idx + 1}. ${project.name}\n`;
+      text += `   Type: ${projectTypeLabels[project.projectType]}\n`;
+      text += `   Score: ${project.scores.total.toFixed(1)}/10\n`;
+      text += `   ${project.description}\n`;
+      text += `   Problem: ${project.problem}\n`;
+      text += `   ROI: ${project.implementation.roiEstimate}\n`;
+      text += `   Tools: ${project.implementation.tools.join(', ')}\n\n`;
+    });
+  });
+
+  text += `---\n`;
+  text += `Built by HireZim AI • AI Project Engine\n`;
+  
+  return text;
+}
+
 export default function ExportButtons({ projects, input }: ExportButtonsProps) {
   const [copied, setCopied] = useState(false);
 
@@ -343,7 +396,7 @@ function generatePDFHTML(projects: Project[], input: AgencyInput): string {
     <div class="info-grid">
       <div class="info-item">
         <div class="info-label">Agency Type</div>
-        <div class="info-value">${input.agencyType}</div>
+        <div class="info-value">${input.currentServices.join(', ') || 'Inferred from services'}</div>
       </div>
       <div class="info-item">
         <div class="info-label">Client Niches</div>
@@ -370,7 +423,8 @@ function generatePDFHTML(projects: Project[], input: AgencyInput): string {
         <div class="project-priority">Priority #${project.priority}</div>
       </div>
       <div class="project-meta">
-        <span>Category: ${project.category}</span>
+        <span>Bucket: ${project.bucket}</span>
+        <span>Type: ${project.projectType}</span>
         <span class="project-score">Score: ${project.scores.total.toFixed(1)}/10</span>
       </div>
       <div class="project-description">

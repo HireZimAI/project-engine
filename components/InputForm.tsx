@@ -9,7 +9,6 @@ export default function InputForm() {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<AgencyInput>({
     businessName: '',
-    agencyType: '',
     clientNiches: '',
     revenueRange: '',
     currentServices: [],
@@ -17,18 +16,6 @@ export default function InputForm() {
     painPoints: '',
     goals: ''
   });
-
-  const agencyTypes = [
-    'Digital Marketing Agency',
-    'Creative Agency',
-    'Full-Service Agency',
-    'SEO/PPC Agency',
-    'Social Media Agency',
-    'Content Marketing Agency',
-    'Web Design/Development Agency',
-    'Media Buying Agency',
-    'Other'
-  ];
 
   const revenueRanges = [
     'Under $100K',
@@ -38,6 +25,7 @@ export default function InputForm() {
     '$5M+'
   ];
 
+  // Expanded services list (April 2026)
   const services = [
     'Social Media Management',
     'SEO',
@@ -49,6 +37,15 @@ export default function InputForm() {
     'Video Production',
     'Analytics/Reporting',
     'Client Consulting',
+    'Direct Mail',
+    'CTV/Connected TV',
+    'TikTok Ads',
+    'AI Search/GEO',
+    'SMS Marketing',
+    'Reputation Management',
+    'Podcast Production',
+    'Video Production',
+    'PR/Earned Media',
     'Other'
   ];
 
@@ -106,26 +103,13 @@ export default function InputForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Agency Type *</label>
-        <select
-          required
-          value={formData.agencyType}
-          onChange={e => setFormData({ ...formData, agencyType: e.target.value })}
-          className="w-full p-3 border rounded-lg"
-        >
-          <option value="">Select...</option>
-          {agencyTypes.map(t => <option key={t} value={t}>{t}</option>)}
-        </select>
-      </div>
-
-      <div>
         <label className="block text-sm font-medium mb-1">Client Niches *</label>
         <input
           required
           type="text"
           value={formData.clientNiches}
           onChange={e => setFormData({ ...formData, clientNiches: e.target.value })}
-          placeholder="e.g., E-commerce, SaaS"
+          placeholder="e.g., HVAC, E-commerce, SaaS"
           className="w-full p-3 border rounded-lg"
         />
       </div>

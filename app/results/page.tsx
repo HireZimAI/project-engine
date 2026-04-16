@@ -3,17 +3,34 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Project, AgencyInput } from '@/lib/types';
+import { Project, AgencyInput, Bucket, ProjectType } from '@/lib/types';
 import { ProjectCard } from '@/components/ProjectCard';
 import ExportButtons from '@/components/ExportButtons';
 import Header from '@/components/Header';
+
+// Five business buckets (April 2026)
+const BUCKETS: Bucket[] = [
+  'Sales',
+  'Marketing', 
+  'Fulfillment & Operations',
+  'Customer Experience & Retention',
+  'Intelligence & Reporting'
+];
+
+const BUCKET_LABELS: Record<Bucket, string> = {
+  'Sales': '💰 Sales',
+  'Marketing': '📣 Marketing',
+  'Fulfillment & Operations': '⚙️ Fulfillment & Ops',
+  'Customer Experience & Retention': '❤️ CX & Retention',
+  'Intelligence & Reporting': '📊 Intelligence'
+};
 
 export default function ResultsPage() {
   const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
   const [input, setInput] = useState<AgencyInput | null>(null);
   const [expandedId, setExpandedId] = useState<string>('project-1');
-  const [filter, setFilter] = useState<string>('All');
+  const [filter, setFilter] = useState<Bucket | 'All'>('All');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -58,9 +75,11 @@ export default function ResultsPage() {
 
   const filteredProjects = filter === 'All' 
     ? projects 
-    : projects.filter(p => p.category === filter);
+    : projects.filter(p => p.bucket === filter);
 
-  const categories = ['All', ...new Set(projects.map(p => p.category))];
+  // Get buckets present in results
+  const presentBuckets = [...new Set(projects.map(p => p.bucket))] as Bucket[];
+  const filterOptions: (Bucket | 'All')[] = ['All', ...presentBuckets];
 
   const topProjects = projects.slice(0, 3);
 
@@ -75,10 +94,10 @@ export default function ResultsPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                Your AI Projects
+                Your AI Roadmap
               </h1>
               <p className="text-gray-600 mt-1">
-                {projects.length} projects generated based on your agency profile
+                {projects.length} projects across the five core areas of your business
               </p>
             </div>
             <div className="flex gap-3">
@@ -90,6 +109,13 @@ export default function ResultsPage() {
               </Link>
             </div>
           </div>
+        </div>
+
+        {/* Framing Line */}
+        <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <p className="text-sm text-blue-800">
+            <strong>AI roadmap below</strong> surfaces projects across the five core areas of your business — including tools you can deploy internally and AI services you can resell to your clients.
+          </p>
         </div>
 
         {/* Top 3 Highlight */}
@@ -104,17 +130,27 @@ export default function ResultsPage() {
                   key={project.id}
                   className="bg-white rounded-lg p-4 shadow-sm border border-gray-200"
                 >
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
                     <span className="w-6 h-6 rounded-full bg-primary-500 text-white text-sm font-bold flex items-center justify-center">
                       {index + 1}
                     </span>
                     <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                      project.category === 'Revenue' ? 'bg-green-100 text-green-800' :
-                      project.category === 'Cost Saving' ? 'bg-blue-100 text-blue-800' :
-                      project.category === 'Automation' ? 'bg-gray-100 text-gray-800' :
-                      'bg-purple-100 text-purple-800'
+                      project.bucket === 'Sales' ? 'bg-green-100 text-green-800' :
+                      project.bucket === 'Marketing' ? 'bg-pink-100 text-pink-800' :
+                      project.bucket === 'Fulfillment & Operations' ? 'bg-gray-100 text-gray-800' :
+                      project.bucket === 'Customer Experience & Retention' ? 'bg-red-100 text-red-800' :
+                      'bg-blue-100 text-blue-800'
                     }`}>
-                      {project.category}
+                      {project.bucket}
+                    </span>
+                    {/* Project Type Badge */}
+                    <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                      project.projectType === 'Internal' ? 'bg-purple-100 text-purple-800' :
+                      project.projectType === 'External-Resellable' ? 'bg-orange-100 text-orange-800' :
+                      'bg-teal-100 text-teal-800'
+                    }`}>
+                      {project.projectType === 'Internal' ? '🏠 Internal' :
+                       project.projectType === 'External-Resellable' ? '🔄 Resell' : '♻️ Both'}
                     </span>
                   </div>
                   <h3 className="font-medium text-gray-900 text-sm">{project.name}</h3>
@@ -125,19 +161,19 @@ export default function ResultsPage() {
           </div>
         )}
 
-        {/* Filter */}
+        {/* Filter by Bucket */}
         <div className="mb-6 flex flex-wrap gap-2">
-          {categories.map(cat => (
+          {filterOptions.map(bucket => (
             <button
-              key={cat}
-              onClick={() => setFilter(cat)}
+              key={bucket}
+              onClick={() => setFilter(bucket)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                filter === cat
+                filter === bucket
                   ? 'bg-primary-600 text-white'
                   : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-50'
               }`}
             >
-              {cat}
+              {bucket === 'All' ? 'All Buckets' : BUCKET_LABELS[bucket]}
             </button>
           ))}
         </div>
@@ -163,7 +199,7 @@ export default function ResultsPage() {
 
         {filteredProjects.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-500">No projects found in this category.</p>
+            <p className="text-gray-500">No projects found in this bucket.</p>
           </div>
         )}
 

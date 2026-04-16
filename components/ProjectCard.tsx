@@ -1,6 +1,6 @@
 'use client';
 
-import { Project } from '@/lib/types';
+import { Project, Bucket, ProjectType } from '@/lib/types';
 
 interface ScoreBarProps {
   label: string;
@@ -54,6 +54,28 @@ export function ScoreDisplay({ scores }: ScoreDisplayProps) {
   );
 }
 
+// Bucket colors (April 2026)
+const bucketColors: Record<Bucket, string> = {
+  'Sales': 'bg-green-100 text-green-800',
+  'Marketing': 'bg-pink-100 text-pink-800',
+  'Fulfillment & Operations': 'bg-gray-100 text-gray-800',
+  'Customer Experience & Retention': 'bg-red-100 text-red-800',
+  'Intelligence & Reporting': 'bg-blue-100 text-blue-800'
+};
+
+// Project type badges
+const projectTypeLabels: Record<ProjectType, string> = {
+  'Internal': '🏠 Internal',
+  'External-Resellable': '🔄 Resell to Clients',
+  'Both': '♻️ Internal + Resell'
+};
+
+const projectTypeColors: Record<ProjectType, string> = {
+  'Internal': 'bg-purple-100 text-purple-800',
+  'External-Resellable': 'bg-orange-100 text-orange-800',
+  'Both': 'bg-teal-100 text-teal-800'
+};
+
 interface ProjectCardProps {
   project: Project;
   isExpanded: boolean;
@@ -61,14 +83,6 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, isExpanded, onToggle }: ProjectCardProps) {
-  const categoryColors: Record<string, string> = {
-    'Revenue': 'bg-green-100 text-green-800',
-    'Cost Saving': 'bg-primary/10 text-primary',
-    'Retention': 'bg-purple-100 text-purple-800',
-    'Automation': 'bg-gray-100 text-gray-800',
-    'New Service': 'bg-accent/10 text-accent'
-  };
-
   return (
     <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-all">
       {/* Header - always visible */}
@@ -77,9 +91,12 @@ export function ProjectCard({ project, isExpanded, onToggle }: ProjectCardProps)
         className="w-full p-5 text-left flex items-start justify-between gap-4 hover:bg-gray-50 transition-colors"
       >
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-3 mb-2">
-            <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${categoryColors[project.category]}`}>
-              {project.category}
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${bucketColors[project.bucket]}`}>
+              {project.bucket}
+            </span>
+            <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${projectTypeColors[project.projectType]}`}>
+              {projectTypeLabels[project.projectType]}
             </span>
             <span className="text-xs text-gray-500">#{project.priority} Priority</span>
           </div>
@@ -121,14 +138,14 @@ export function ProjectCard({ project, isExpanded, onToggle }: ProjectCardProps)
             {/* Implementation */}
             {project.implementation && (
             <div>
-              <h4 className="text-sm font-semibold text-gray-900 mb-2">Implementation Plan <span className="text-xs font-normal text-gray-500">(Subject to Final 3DX)</span></h4>
+              <h4 className="text-sm font-semibold text-gray-900 mb-2">Implementation Plan <span className="text-xs font-normal text-gray-500">(Using 3DX: Diagnose → Design → Deploy)</span></h4>
               <div className="bg-gray-50 rounded-lg p-4 space-y-3">
                 <div>
                   <span className="text-xs font-medium text-gray-500 uppercase">Overview</span>
                   <p className="text-sm text-gray-700 mt-1">{project.implementation.overview}</p>
                 </div>
                 <div>
-                  <span className="text-xs font-medium text-gray-500 uppercase">Tools Stack <span className="font-normal text-gray-400">(Subject to Final 3DX)</span></span>
+                  <span className="text-xs font-medium text-gray-500 uppercase">Tools Stack</span>
                   <div className="flex flex-wrap gap-2 mt-1">
                     {project.implementation.tools.map((tool, i) => (
                       <span key={i} className="px-2 py-1 bg-white border border-gray-200 rounded text-xs text-gray-700">
@@ -136,23 +153,22 @@ export function ProjectCard({ project, isExpanded, onToggle }: ProjectCardProps)
                       </span>
                     ))}
                   </div>
-                  <p className="text-xs text-gray-400 mt-2 italic">Alternatives available upon final diagnosis</p>
                 </div>
                 <div>
-                  <span className="text-xs font-medium text-gray-500 uppercase">DIAGNOSE → DESIGN → DEPLOY → EXECUTE</span>
+                  <span className="text-xs font-medium text-gray-500 uppercase">3DX Implementation Steps</span>
                   <div className="mt-2 space-y-2">
                     {project.implementation.steps.map((step, i) => {
-                      // Categorize steps
+                      // Categorize steps by 3DX phase
                       const stepUpper = step.toUpperCase();
-                      let prefix = "•";
-                      if (stepUpper.includes("DIAGNOSE")) prefix = "🔍 DIAGNOSE:";
-                      else if (stepUpper.includes("DESIGN")) prefix = "🎨 DESIGN:";
-                      else if (stepUpper.includes("DEPLOY")) prefix = "🚀 DEPLOY:";
-                      else if (stepUpper.includes("EXECUTE")) prefix = "⚡ EXECUTE:";
+                      let icon = "•";
+                      if (stepUpper.includes("DIAGNOSE")) icon = "🔍";
+                      else if (stepUpper.includes("DESIGN")) icon = "🎨";
+                      else if (stepUpper.includes("DEPLOY")) icon = "🚀";
+                      else if (stepUpper.includes("EXECUTE")) icon = "⚡";
                       
                       return (
                         <p key={i} className="text-sm text-gray-700">
-                          {step}
+                          {icon} {step}
                         </p>
                       );
                     })}

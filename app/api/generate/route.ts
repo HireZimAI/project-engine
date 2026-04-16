@@ -5,10 +5,11 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     
-    const { agencyType, clientNiches, revenueRange, currentServices, techStack, painPoints, goals } = body;
+    // Updated input (April 2026): agencyType removed - inferred from services
+    const { clientNiches, revenueRange, currentServices, techStack, painPoints, goals } = body;
 
     // Validate required fields
-    if (!agencyType || !clientNiches || !revenueRange || !currentServices || !painPoints || !goals) {
+    if (!clientNiches || !revenueRange || !currentServices || !painPoints || !goals) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -16,7 +17,6 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await generateProjectsWithClaude({
-      agencyType,
       clientNiches,
       revenueRange,
       currentServices,
