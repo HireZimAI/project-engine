@@ -154,7 +154,7 @@ export default function ResultsPage() {
                     </span>
                   </div>
                   <h3 className="font-medium text-gray-900 text-sm">{project.name}</h3>
-                  <p className="text-xs text-gray-500 mt-1">{project.scores.total.toFixed(1)}/10 score</p>
+                  <p className="text-xs text-gray-500 mt-1">{(   project.scores?.total ??   (     (project.scores?.revenue ?? 0) +     (project.scores?.ease ?? 0) +     (project.scores?.roiSpeed ?? 0) +     (project.scores?.differentiation ?? 0)   ) / 4 ).toFixed(1)}/10 score</p>
                 </div>
               ))}
             </div>
