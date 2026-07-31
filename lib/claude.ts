@@ -225,7 +225,7 @@ Tag each project as "Internal", "External-Resellable", or "Both".
 Output ONLY valid JSON.`;
 
   try {
-    console.log('Calling Claude API with model: claude-4-sonnet-20250514');
+    console.log('Calling Claude API with model: claude-sonnet-4-6');
     
     const controller = new AbortController();
     const timeout = setTimeout(() => {
@@ -234,7 +234,7 @@ Output ONLY valid JSON.`;
     }, 90000); // 90 second timeout
     
     const msg = await anthropic.messages.create({
-      model: 'claude-4-sonnet-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 4000,
       system: systemPrompt,
       messages: [
